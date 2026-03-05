@@ -5,3 +5,9 @@ export interface StudentHoursDTO {
   totalCertificadosEmitidos: number;
   totalHorasAcumuladas: number;
 }
+export interface StudentHoursDashBoardDTO {
+  totalAlunos: number;
+  totalCertificados: number;
+  horasTotais: number;
+  studentAverage: number;
+}

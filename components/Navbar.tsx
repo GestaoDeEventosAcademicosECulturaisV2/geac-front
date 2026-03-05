@@ -220,7 +220,7 @@ export function Navbar() {
                       </button>
 
                       {/* Menu Dropdown - Visível no hover usando a classe 'group-hover:block' */}
-                      <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 py-2 hidden group-hover:block transition-all z-50">
+                      <div className="absolute top-full left-0  w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 py-2 hidden group-hover:block transition-all z-50">
                         {item.subItems.map((subItem) => (
                           <Link
                             key={subItem.href}

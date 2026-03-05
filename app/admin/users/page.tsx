@@ -16,7 +16,8 @@ export default async function UsersPage() {
               Gerenciar Usuários
             </h1>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              Visualize, altere permissões (roles) e gerencie o acesso de todos os usuários da plataforma.
+              Visualize, altere permissões (roles) e gerencie o acesso de todos
+              os usuários da plataforma.
             </p>
           </div>
 

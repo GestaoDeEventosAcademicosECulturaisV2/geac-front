@@ -1,12 +1,19 @@
 import { RoleGuard } from "@/components/auth/RoleGuard";
-import { getAllOrganizationEngagement } from "@/app/actions/organizationEngagementActions";
+import {
+  getAllOrganizationEngagement,
+  getOrganizationDashBoard,
+  getTop5Engajament,
+  getTop5MostEvents,
+} from "@/app/actions/organizationEngagementActions";
 import OrganizationEngagementContent from "./OrganizationEngagementContent";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrganizationEngagementPage() {
-  const engagement = await getAllOrganizationEngagement();
-
+  const topOrgs = await getAllOrganizationEngagement();
+  const dashBoard = await getOrganizationDashBoard();
+  const top5byEngagement = await getTop5Engajament();
+  const top5byEvents = await getTop5MostEvents();
   return (
     <RoleGuard allowedRoles={["ADMIN"]}>
       <div className="min-h-screen bg-zinc-50 dark:bg-black py-12">
@@ -21,7 +28,14 @@ export default async function OrganizationEngagementPage() {
             </p>
           </div>
 
-          <OrganizationEngagementContent initialData={engagement} />
+          <OrganizationEngagementContent
+            stats={{
+              initialData: topOrgs,
+              dashBoard: dashBoard,
+              moreEngagement: top5byEvents,
+              mostEvents: top5byEngagement,
+            }}
+          />
         </div>
       </div>
     </RoleGuard>
