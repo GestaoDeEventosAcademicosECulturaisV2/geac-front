@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { StudentHoursDTO } from "@/types/studentHours";
+import { StudentHoursDashBoardDTO, StudentHoursDTO } from "@/types/studentHours";
 import { API_URL } from "./configs";
 
 export async function getAllStudentHours(): Promise<StudentHoursDTO[]> {
@@ -30,4 +30,31 @@ export async function getAllStudentHours(): Promise<StudentHoursDTO[]> {
     console.error("Erro na getAllStudentHours:", error);
     return [];
   }
+}
+  export async function getDashBoardStatistics(): Promise<StudentHoursDashBoardDTO | null> {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) {
+      return null;
+    }
+    try {
+      const response = await fetch(`${API_URL}/extracurricular-hours/statistics`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+      });
+  
+      if (!response.ok) {
+        return null;
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao buscar estatisticas:", error);
+      return null;
+    }
+
 }

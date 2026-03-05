@@ -6,3 +6,15 @@ export interface EventStatisticsDTO {
   totalPresentes: number;
   mediaAvaliacao: number;
 }
+
+export interface EventDashBoardReportDTO{
+  totalEvents: number
+  activeEvents: number
+  completedEvents: number
+  cancelledEvents: number
+  upcomingEvents: number
+  totalInscritos: number
+  totalPresentes: number
+  taxaPresenca: number
+  avgRating: number
+}

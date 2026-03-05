@@ -16,10 +16,13 @@ import {
   ArrowDown,
   Activity,
 } from "lucide-react";
-import { EventStatisticsDTO } from "@/types/eventStatistics";
+import { EventDashBoardReportDTO, EventStatisticsDTO } from "@/types/eventStatistics";
 
 interface EventStatisticsContentProps {
-  initialData: EventStatisticsDTO[];
+  stats:{
+    initialData: EventStatisticsDTO[];
+    dashBoard: EventDashBoardReportDTO;
+  }
 }
 
 type SortField =
@@ -35,8 +38,8 @@ const STATUS_LABELS: Record<string, string> = {
   ACTIVE: "Ativo",
   COMPLETED: "Finalizado",
   CANCELLED: "Cancelado",
+  UPCOMING: "Próximo"
 };
-
 const STATUS_STYLES: Record<string, string> = {
   ACTIVE:
     "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
@@ -44,11 +47,15 @@ const STATUS_STYLES: Record<string, string> = {
     "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800",
   CANCELLED:
     "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800",
+  UPCOMING:
+    "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border-red-200 dark:border-purple-800",
 };
 
 export default function EventStatisticsContent({
-  initialData,
+  stats
 }: Readonly<EventStatisticsContentProps>) {
+ 
+  const {initialData , dashBoard}= stats;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [sortField, setSortField] = useState<SortField>("totalInscritos");
@@ -57,42 +64,23 @@ export default function EventStatisticsContent({
 
   // ── Métricas agregadas globais ──
   const metrics = useMemo(() => {
-    const totalEvents = initialData.length;
-    const activeEvents = initialData.filter(
-      (e) => e.eventStatus === "ACTIVE",
-    ).length;
-    const completedEvents = initialData.filter(
-      (e) => e.eventStatus === "COMPLETED",
-    ).length;
-    const cancelledEvents = initialData.filter(
-      (e) => e.eventStatus === "CANCELLED",
-    ).length;
-
-    const totalInscritos = initialData.reduce(
-      (sum, e) => sum + e.totalInscritos,
-      0,
-    );
-    const totalPresentes = initialData.reduce(
-      (sum, e) => sum + e.totalPresentes,
-      0,
-    );
-    const taxaPresenca =
-      totalInscritos > 0
-        ? Math.round((totalPresentes / totalInscritos) * 100)
-        : 0;
-
+    const totalEvents = dashBoard.totalEvents;
+    const activeEvents = dashBoard.activeEvents
+    const completedEvents = dashBoard.completedEvents
+    const cancelledEvents = dashBoard.cancelledEvents
+    const upcomingEvents = dashBoard.upcomingEvents
+    const totalInscritos = dashBoard.totalInscritos
+    const totalPresentes = dashBoard.totalPresentes
+    const taxaPresenca = dashBoard.taxaPresenca
     const eventsWithRating = initialData.filter((e) => e.mediaAvaliacao > 0);
-    const avgRating =
-      eventsWithRating.length > 0
-        ? eventsWithRating.reduce((sum, e) => sum + e.mediaAvaliacao, 0) /
-          eventsWithRating.length
-        : 0;
+    const avgRating = dashBoard.avgRating
 
     return {
       totalEvents,
       activeEvents,
       completedEvents,
       cancelledEvents,
+      upcomingEvents,
       totalInscritos,
       totalPresentes,
       taxaPresenca,
@@ -109,7 +97,7 @@ export default function EventStatisticsContent({
 
   // ── Distribuição por status (para barra visual) ──
   const statusDistribution = useMemo(() => {
-    const total = initialData.length || 1;
+    const total = dashBoard.totalEvents || 1;
     return [
       {
         status: "ACTIVE",
@@ -117,6 +105,13 @@ export default function EventStatisticsContent({
         count: metrics.activeEvents,
         pct: Math.round((metrics.activeEvents / total) * 100),
         color: "bg-emerald-500",
+      },
+      {
+        status: "UPCOMING",
+        label: "Próximos",
+        count: metrics.upcomingEvents,
+        pct: Math.round((metrics.upcomingEvents / total) * 100),
+        color: "bg-purple-500",
       },
       {
         status: "COMPLETED",
@@ -132,8 +127,9 @@ export default function EventStatisticsContent({
         pct: Math.round((metrics.cancelledEvents / total) * 100),
         color: "bg-red-500",
       },
+      
     ];
-  }, [initialData.length, metrics]);
+  }, [dashBoard.totalEvents, metrics]);
 
   // ── Filtragem ──
   const filtered = useMemo(() => {

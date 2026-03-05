@@ -15,10 +15,15 @@ import {
   ArrowDown,
   BarChart3,
 } from "lucide-react";
-import { OrganizationEngagementDTO } from "@/types/organizationEngagement";
+import { OrganizationDashBoardDTO, OrganizationEngagementDTO, OrganizationPopularityDTO } from "@/types/organizationEngagement";
 
 interface OrganizationEngagementContentProps {
-  initialData: OrganizationEngagementDTO[];
+  stats: {
+    initialData: OrganizationEngagementDTO[];
+    dashBoard: OrganizationDashBoardDTO;
+    moreEngagement: OrganizationPopularityDTO[];
+    mostEvents: OrganizationPopularityDTO[];
+  }
 }
 
 type SortField =
@@ -30,8 +35,9 @@ type SortDirection = "asc" | "desc";
 const PAGE_SIZE = 10;
 
 export default function OrganizationEngagementContent({
-  initialData,
+  stats,
 }: Readonly<OrganizationEngagementContentProps>) {
+  const { initialData, dashBoard, moreEngagement, mostEvents } = stats;
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>(
     "totalParticipantesEngajados",
@@ -41,22 +47,12 @@ export default function OrganizationEngagementContent({
 
   // ── Métricas agregadas ──
   const metrics = useMemo(() => {
-    const totalOrgs = initialData.length;
-    const totalEvents = initialData.reduce(
-      (sum, o) => sum + o.totalEventosRealizados,
-      0,
-    );
-    const totalEngaged = initialData.reduce(
-      (sum, o) => sum + o.totalParticipantesEngajados,
-      0,
-    );
-    const avgEventsPerOrg =
-      totalOrgs > 0 ? Math.round((totalEvents / totalOrgs) * 10) / 10 : 0;
-    const avgEngagedPerOrg =
-      totalOrgs > 0 ? Math.round((totalEngaged / totalOrgs) * 10) / 10 : 0;
-    const activeOrgs = initialData.filter(
-      (o) => o.totalEventosRealizados > 0,
-    ).length;
+    const totalOrgs = dashBoard.totalOrgs;
+    const totalEvents = dashBoard.totalEvents;
+    const totalEngaged = dashBoard.totalEngaged
+    const avgEventsPerOrg = dashBoard.avgEventsPerOrg
+    const avgEngagedPerOrg = dashBoard.avgEngagedPerOrg
+    const activeOrgs = dashBoard.activeOrgs
 
     return {
       totalOrgs,
@@ -66,39 +62,19 @@ export default function OrganizationEngagementContent({
       avgEngagedPerOrg,
       activeOrgs,
     };
-  }, [initialData]);
+  }, [dashBoard]);
 
   // ── Top 5 organizações por engajamento ──
-  const topByEngagement = useMemo(() => {
-    return [...initialData]
-      .sort(
-        (a, b) => b.totalParticipantesEngajados - a.totalParticipantesEngajados,
-      )
-      .slice(0, 5);
-  }, [initialData]);
-
+  const topByEngagement = moreEngagement;
   // ── Top 5 organizações por eventos ──
-  const topByEvents = useMemo(() => {
-    return [...initialData]
-      .sort((a, b) => b.totalEventosRealizados - a.totalEventosRealizados)
-      .slice(0, 5);
-  }, [initialData]);
-
+  const topByEvents = mostEvents
   // ── Distribuição de atividade ──
   const activityDistribution = useMemo(() => {
-    const inactive = initialData.filter(
-      (o) => o.totalEventosRealizados === 0,
-    ).length;
-    const low = initialData.filter(
-      (o) => o.totalEventosRealizados >= 1 && o.totalEventosRealizados <= 3,
-    ).length;
-    const medium = initialData.filter(
-      (o) => o.totalEventosRealizados >= 4 && o.totalEventosRealizados <= 10,
-    ).length;
-    const high = initialData.filter(
-      (o) => o.totalEventosRealizados > 10,
-    ).length;
-    const total = initialData.length || 1;
+    const inactive = dashBoard.inactiveCount
+    const low = dashBoard.lowCount
+    const medium = dashBoard.mediumCount
+    const high = dashBoard.highCount
+    const total = dashBoard.totalOrgs
 
     return [
       {
@@ -130,7 +106,7 @@ export default function OrganizationEngagementContent({
         dotColor: "bg-emerald-500",
       },
     ];
-  }, [initialData]);
+  }, [dashBoard]);
 
   // ── Filtragem ──
   const filtered = useMemo(() => {
@@ -238,13 +214,8 @@ export default function OrganizationEngagementContent({
           ) : (
             <div className="space-y-3">
               {topByEngagement.map((org, idx) => {
-                const max =
-                  topByEngagement[0]?.totalParticipantesEngajados || 1;
-                const barWidth = Math.max(
-                  (org.totalParticipantesEngajados / max) * 100,
-                  4,
-                );
 
+                const barWidth = Math.max((org.value / moreEngagement[0].value) * 100, 4);
                 return (
                   <div key={org.organizerId} className="space-y-1">
                     <div className="flex items-center justify-between">
@@ -257,7 +228,7 @@ export default function OrganizationEngagementContent({
                         </span>
                       </div>
                       <span className="flex-shrink-0 ml-2 text-sm font-semibold text-zinc-900 dark:text-white">
-                        {org.totalParticipantesEngajados}
+                        {org.value}
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-zinc-100 dark:bg-zinc-700 overflow-hidden">
@@ -289,11 +260,8 @@ export default function OrganizationEngagementContent({
           ) : (
             <div className="space-y-3">
               {topByEvents.map((org, idx) => {
-                const max = topByEvents[0]?.totalEventosRealizados || 1;
-                const barWidth = Math.max(
-                  (org.totalEventosRealizados / max) * 100,
-                  4,
-                );
+                const max = topByEvents[0]?.value || 1;
+                const barWidth = Math.max((org.value / mostEvents[0].value) * 100, 4);
 
                 return (
                   <div key={org.organizerId} className="space-y-1">
@@ -307,7 +275,7 @@ export default function OrganizationEngagementContent({
                         </span>
                       </div>
                       <span className="flex-shrink-0 ml-2 text-sm font-semibold text-zinc-900 dark:text-white">
-                        {org.totalEventosRealizados}
+                        {org.value}
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-zinc-100 dark:bg-zinc-700 overflow-hidden">
@@ -451,25 +419,18 @@ export default function OrganizationEngagementContent({
                     const avgEngPerEvent =
                       org.totalEventosRealizados > 0
                         ? Math.round(
-                            org.totalParticipantesEngajados /
-                              org.totalEventosRealizados,
-                          )
+                          org.totalParticipantesEngajados /
+                          org.totalEventosRealizados,
+                        )
                         : 0;
 
-                    const maxEngaged =
-                      sorted.length > 0
-                        ? Math.max(
-                            ...sorted.map((o) => o.totalParticipantesEngajados),
-                          )
-                        : 1;
-                    const barWidth =
-                      maxEngaged > 0
-                        ? Math.max(
-                            (org.totalParticipantesEngajados / maxEngaged) *
-                              100,
-                            3,
-                          )
-                        : 0;
+                    const maxEngaged = moreEngagement.length > 0
+                      ? moreEngagement[0].value
+                      : 1;
+                    const barWidth = Math.max(
+                      (org.totalParticipantesEngajados / maxEngaged) * 100,
+                      3
+                    );
 
                     return (
                       <tr
@@ -534,9 +495,9 @@ export default function OrganizationEngagementContent({
                 const avgEngPerEvent =
                   org.totalEventosRealizados > 0
                     ? Math.round(
-                        org.totalParticipantesEngajados /
-                          org.totalEventosRealizados,
-                      )
+                      org.totalParticipantesEngajados /
+                      org.totalEventosRealizados,
+                    )
                     : 0;
 
                 return (

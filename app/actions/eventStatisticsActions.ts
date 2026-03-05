@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { EventStatisticsDTO } from "@/types/eventStatistics";
+import { EventDashBoardReportDTO, EventStatisticsDTO } from "@/types/eventStatistics";
 import { API_URL } from "./configs";
 
 export async function getAllEventStatistics(): Promise<EventStatisticsDTO[]> {
@@ -29,5 +29,30 @@ export async function getAllEventStatistics(): Promise<EventStatisticsDTO[]> {
   } catch (error) {
     console.error("Erro na getAllEventStatistics:", error);
     return [];
+  }
+}
+export async function getEventDashBoard(): Promise<EventDashBoardReportDTO> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) throw new Error("Token invalido");
+
+    const response = await fetch(`${API_URL}/views/eventsDashBoard`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar estatísticas de eventos:${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Erro na getAllEventStatistics:${error}`);
   }
 }
