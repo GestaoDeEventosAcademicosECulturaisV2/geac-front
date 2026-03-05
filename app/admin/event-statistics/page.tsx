@@ -1,5 +1,8 @@
 import { RoleGuard } from "@/components/auth/RoleGuard";
-import { getAllEventStatistics, getEventDashBoard } from "@/app/actions/eventStatisticsActions";
+import {
+  getAllEventStatistics,
+  getEventDashBoard,
+} from "@/app/actions/eventStatisticsActions";
 import EventStatisticsContent from "./EventStatisticsContent";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +11,6 @@ export default async function EventStatisticsPage() {
   const statistics = await getAllEventStatistics();
   const dashBoard = await getEventDashBoard();
 
-  
   return (
     <RoleGuard allowedRoles={["ADMIN"]}>
       <div className="min-h-screen bg-zinc-50 dark:bg-black py-12">
@@ -23,13 +25,14 @@ export default async function EventStatisticsPage() {
             </p>
           </div>
 
-          <EventStatisticsContent stats={{ 
-              initialData: statistics, 
-              dashBoard: dashBoard 
-            }} />
+          <EventStatisticsContent
+            stats={{
+              initialData: statistics,
+              dashBoard: dashBoard,
+            }}
+          />
         </div>
       </div>
     </RoleGuard>
   );
-
 }

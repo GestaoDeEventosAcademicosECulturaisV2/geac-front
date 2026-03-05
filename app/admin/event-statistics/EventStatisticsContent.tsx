@@ -16,13 +16,16 @@ import {
   ArrowDown,
   Activity,
 } from "lucide-react";
-import { EventDashBoardReportDTO, EventStatisticsDTO } from "@/types/eventStatistics";
+import {
+  EventDashBoardReportDTO,
+  EventStatisticsDTO,
+} from "@/types/eventStatistics";
 
 interface EventStatisticsContentProps {
-  stats:{
+  stats: {
     initialData: EventStatisticsDTO[];
     dashBoard: EventDashBoardReportDTO;
-  }
+  };
 }
 
 type SortField =
@@ -38,7 +41,7 @@ const STATUS_LABELS: Record<string, string> = {
   ACTIVE: "Ativo",
   COMPLETED: "Finalizado",
   CANCELLED: "Cancelado",
-  UPCOMING: "Próximo"
+  UPCOMING: "Próximo",
 };
 const STATUS_STYLES: Record<string, string> = {
   ACTIVE:
@@ -52,10 +55,9 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 export default function EventStatisticsContent({
-  stats
+  stats,
 }: Readonly<EventStatisticsContentProps>) {
- 
-  const {initialData , dashBoard}= stats;
+  const { initialData, dashBoard } = stats;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [sortField, setSortField] = useState<SortField>("totalInscritos");
@@ -65,15 +67,15 @@ export default function EventStatisticsContent({
   // ── Métricas agregadas globais ──
   const metrics = useMemo(() => {
     const totalEvents = dashBoard.totalEvents;
-    const activeEvents = dashBoard.activeEvents
-    const completedEvents = dashBoard.completedEvents
-    const cancelledEvents = dashBoard.cancelledEvents
-    const upcomingEvents = dashBoard.upcomingEvents
-    const totalInscritos = dashBoard.totalInscritos
-    const totalPresentes = dashBoard.totalPresentes
-    const taxaPresenca = dashBoard.taxaPresenca
+    const activeEvents = dashBoard.activeEvents;
+    const completedEvents = dashBoard.completedEvents;
+    const cancelledEvents = dashBoard.cancelledEvents;
+    const upcomingEvents = dashBoard.upcomingEvents;
+    const totalInscritos = dashBoard.totalInscritos;
+    const totalPresentes = dashBoard.totalPresentes;
+    const taxaPresenca = dashBoard.taxaPresenca;
     const eventsWithRating = initialData.filter((e) => e.mediaAvaliacao > 0);
-    const avgRating = dashBoard.avgRating
+    const avgRating = dashBoard.avgRating;
 
     return {
       totalEvents,
@@ -127,7 +129,6 @@ export default function EventStatisticsContent({
         pct: Math.round((metrics.cancelledEvents / total) * 100),
         color: "bg-red-500",
       },
-      
     ];
   }, [dashBoard.totalEvents, metrics]);
 

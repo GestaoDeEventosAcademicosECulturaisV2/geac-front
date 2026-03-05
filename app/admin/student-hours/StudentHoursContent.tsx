@@ -13,14 +13,16 @@ import {
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
-import { StudentHoursDashBoardDTO, StudentHoursDTO } from "@/types/studentHours";
+import {
+  StudentHoursDashBoardDTO,
+  StudentHoursDTO,
+} from "@/types/studentHours";
 
 interface StudentHoursContentProps {
-  stats:{
-      initialData: StudentHoursDTO[];
-      dashBoard: StudentHoursDashBoardDTO;
-  }
-  
+  stats: {
+    initialData: StudentHoursDTO[];
+    dashBoard: StudentHoursDashBoardDTO;
+  };
 }
 
 type SortField =
@@ -32,10 +34,9 @@ type SortDirection = "asc" | "desc";
 const PAGE_SIZE = 10;
 
 export default function StudentHoursContent({
-  stats
+  stats,
 }: Readonly<StudentHoursContentProps>) {
-
-  const {initialData,dashBoard}= stats;
+  const { initialData, dashBoard } = stats;
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("totalHorasAcumuladas");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -44,9 +45,9 @@ export default function StudentHoursContent({
   // Métricas agregadas
   const metrics = useMemo(() => {
     const totalStudents = dashBoard.totalAlunos;
-    const totalCertificates = dashBoard.totalCertificados
-    const totalHours = dashBoard.horasTotais
-    const avgHours = dashBoard.studentAverage.toFixed(1)
+    const totalCertificates = dashBoard.totalCertificados;
+    const totalHours = dashBoard.horasTotais;
+    const avgHours = dashBoard.studentAverage.toFixed(1);
     return { totalStudents, totalCertificates, totalHours, avgHours };
   }, [dashBoard]);
 

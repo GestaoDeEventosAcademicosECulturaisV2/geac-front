@@ -167,7 +167,10 @@ export async function getOrganizersAction(): Promise<OrganizerResponseDTO[]> {
   }
 }
 
-export async function updateOrganizerAction(id: string, payload: OrganizerRequestDTO) {
+export async function updateOrganizerAction(
+  id: string,
+  payload: OrganizerRequestDTO,
+) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -185,7 +188,9 @@ export async function updateOrganizerAction(id: string, payload: OrganizerReques
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+      return {
+        error: errorData?.message || `Erro no servidor: ${response.status}`,
+      };
     }
 
     revalidatePath("/admin/organizers");
@@ -212,7 +217,9 @@ export async function deleteOrganizerAction(id: string) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+      return {
+        error: errorData?.message || `Erro no servidor: ${response.status}`,
+      };
     }
 
     revalidatePath("/admin/organizers");

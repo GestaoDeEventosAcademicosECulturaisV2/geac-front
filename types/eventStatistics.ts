@@ -7,14 +7,14 @@ export interface EventStatisticsDTO {
   mediaAvaliacao: number;
 }
 
-export interface EventDashBoardReportDTO{
-  totalEvents: number
-  activeEvents: number
-  completedEvents: number
-  cancelledEvents: number
-  upcomingEvents: number
-  totalInscritos: number
-  totalPresentes: number
-  taxaPresenca: number
-  avgRating: number
+export interface EventDashBoardReportDTO {
+  totalEvents: number;
+  activeEvents: number;
+  completedEvents: number;
+  cancelledEvents: number;
+  upcomingEvents: number;
+  totalInscritos: number;
+  totalPresentes: number;
+  taxaPresenca: number;
+  avgRating: number;
 }

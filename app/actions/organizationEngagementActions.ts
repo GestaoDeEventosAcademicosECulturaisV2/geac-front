@@ -1,7 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { OrganizationDashBoardDTO, OrganizationEngagementDTO, OrganizationPopularityDTO } from "@/types/organizationEngagement";
+import {
+  OrganizationDashBoardDTO,
+  OrganizationEngagementDTO,
+  OrganizationPopularityDTO,
+} from "@/types/organizationEngagement";
 import { API_URL } from "./configs";
 
 export async function getAllOrganizationEngagement(): Promise<
@@ -36,9 +40,7 @@ export async function getAllOrganizationEngagement(): Promise<
     return [];
   }
 }
-export async function getOrganizationDashBoard(): Promise<
-  OrganizationDashBoardDTO
-> {
+export async function getOrganizationDashBoard(): Promise<OrganizationDashBoardDTO> {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -65,7 +67,7 @@ export async function getOrganizationDashBoard(): Promise<
     return await response.json();
   } catch (error) {
     console.error("Erro na getAllOrganizationEngagement:", error);
-    throw new Error("erro ve no console ai")
+    throw new Error("erro ve no console ai");
   }
 }
 
@@ -98,7 +100,7 @@ export async function getTop5MostEvents(): Promise<
     return await response.json();
   } catch (error) {
     console.error("Erro ao uscar organizacsoes com mais eventos", error);
-    throw new Error("erro ve no console ai")
+    throw new Error("erro ve no console ai");
   }
 }
 export async function getTop5Engajament(): Promise<
@@ -110,14 +112,17 @@ export async function getTop5Engajament(): Promise<
 
     if (!token) throw new Error("Erro no token");
 
-    const response = await fetch(`${API_URL}/views/organization-topengagement`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${API_URL}/views/organization-topengagement`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
 
     if (!response.ok) {
       console.error(
@@ -129,7 +134,10 @@ export async function getTop5Engajament(): Promise<
 
     return await response.json();
   } catch (error) {
-    console.error("Erro ao uscar organizacsoes com mais pessoaass nos envetos", error);
-    throw new Error("erro ve no console ai")
+    console.error(
+      "Erro ao uscar organizacsoes com mais pessoaass nos envetos",
+      error,
+    );
+    throw new Error("erro ve no console ai");
   }
 }

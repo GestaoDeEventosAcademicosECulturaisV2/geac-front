@@ -11,14 +11,14 @@ export interface OrganizationPopularityDTO {
 }
 
 export interface OrganizationDashBoardDTO {
-  totalOrgs: number
-  totalEvents: number
-  totalEngaged: number
-  avgEventsPerOrg: number
-  avgEngagedPerOrg: number
-  activeOrgs: number
-  inactiveCount: number
-  lowCount: number
-  mediumCount: number
-  highCount: number
+  totalOrgs: number;
+  totalEvents: number;
+  totalEngaged: number;
+  avgEventsPerOrg: number;
+  avgEngagedPerOrg: number;
+  activeOrgs: number;
+  inactiveCount: number;
+  lowCount: number;
+  mediumCount: number;
+  highCount: number;
 }

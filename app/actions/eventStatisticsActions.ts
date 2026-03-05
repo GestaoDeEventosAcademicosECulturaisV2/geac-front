@@ -1,7 +1,10 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { EventDashBoardReportDTO, EventStatisticsDTO } from "@/types/eventStatistics";
+import {
+  EventDashBoardReportDTO,
+  EventStatisticsDTO,
+} from "@/types/eventStatistics";
 import { API_URL } from "./configs";
 
 export async function getAllEventStatistics(): Promise<EventStatisticsDTO[]> {
@@ -48,7 +51,9 @@ export async function getEventDashBoard(): Promise<EventDashBoardReportDTO> {
     });
 
     if (!response.ok) {
-      throw new Error(`Erro ao buscar estatísticas de eventos:${response.status}`);
+      throw new Error(
+        `Erro ao buscar estatísticas de eventos:${response.status}`,
+      );
     }
 
     return await response.json();

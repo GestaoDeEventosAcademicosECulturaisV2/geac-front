@@ -15,7 +15,11 @@ import {
   ArrowDown,
   BarChart3,
 } from "lucide-react";
-import { OrganizationDashBoardDTO, OrganizationEngagementDTO, OrganizationPopularityDTO } from "@/types/organizationEngagement";
+import {
+  OrganizationDashBoardDTO,
+  OrganizationEngagementDTO,
+  OrganizationPopularityDTO,
+} from "@/types/organizationEngagement";
 
 interface OrganizationEngagementContentProps {
   stats: {
@@ -23,7 +27,7 @@ interface OrganizationEngagementContentProps {
     dashBoard: OrganizationDashBoardDTO;
     moreEngagement: OrganizationPopularityDTO[];
     mostEvents: OrganizationPopularityDTO[];
-  }
+  };
 }
 
 type SortField =
@@ -49,10 +53,10 @@ export default function OrganizationEngagementContent({
   const metrics = useMemo(() => {
     const totalOrgs = dashBoard.totalOrgs;
     const totalEvents = dashBoard.totalEvents;
-    const totalEngaged = dashBoard.totalEngaged
-    const avgEventsPerOrg = dashBoard.avgEventsPerOrg
-    const avgEngagedPerOrg = dashBoard.avgEngagedPerOrg
-    const activeOrgs = dashBoard.activeOrgs
+    const totalEngaged = dashBoard.totalEngaged;
+    const avgEventsPerOrg = dashBoard.avgEventsPerOrg;
+    const avgEngagedPerOrg = dashBoard.avgEngagedPerOrg;
+    const activeOrgs = dashBoard.activeOrgs;
 
     return {
       totalOrgs,
@@ -67,14 +71,14 @@ export default function OrganizationEngagementContent({
   // ── Top 5 organizações por engajamento ──
   const topByEngagement = moreEngagement;
   // ── Top 5 organizações por eventos ──
-  const topByEvents = mostEvents
+  const topByEvents = mostEvents;
   // ── Distribuição de atividade ──
   const activityDistribution = useMemo(() => {
-    const inactive = dashBoard.inactiveCount
-    const low = dashBoard.lowCount
-    const medium = dashBoard.mediumCount
-    const high = dashBoard.highCount
-    const total = dashBoard.totalOrgs
+    const inactive = dashBoard.inactiveCount;
+    const low = dashBoard.lowCount;
+    const medium = dashBoard.mediumCount;
+    const high = dashBoard.highCount;
+    const total = dashBoard.totalOrgs;
 
     return [
       {
@@ -214,8 +218,10 @@ export default function OrganizationEngagementContent({
           ) : (
             <div className="space-y-3">
               {topByEngagement.map((org, idx) => {
-
-                const barWidth = Math.max((org.value / moreEngagement[0].value) * 100, 4);
+                const barWidth = Math.max(
+                  (org.value / moreEngagement[0].value) * 100,
+                  4,
+                );
                 return (
                   <div key={org.organizerId} className="space-y-1">
                     <div className="flex items-center justify-between">
@@ -261,7 +267,10 @@ export default function OrganizationEngagementContent({
             <div className="space-y-3">
               {topByEvents.map((org, idx) => {
                 const max = topByEvents[0]?.value || 1;
-                const barWidth = Math.max((org.value / mostEvents[0].value) * 100, 4);
+                const barWidth = Math.max(
+                  (org.value / mostEvents[0].value) * 100,
+                  4,
+                );
 
                 return (
                   <div key={org.organizerId} className="space-y-1">
@@ -419,17 +428,16 @@ export default function OrganizationEngagementContent({
                     const avgEngPerEvent =
                       org.totalEventosRealizados > 0
                         ? Math.round(
-                          org.totalParticipantesEngajados /
-                          org.totalEventosRealizados,
-                        )
+                            org.totalParticipantesEngajados /
+                              org.totalEventosRealizados,
+                          )
                         : 0;
 
-                    const maxEngaged = moreEngagement.length > 0
-                      ? moreEngagement[0].value
-                      : 1;
+                    const maxEngaged =
+                      moreEngagement.length > 0 ? moreEngagement[0].value : 1;
                     const barWidth = Math.max(
                       (org.totalParticipantesEngajados / maxEngaged) * 100,
-                      3
+                      3,
                     );
 
                     return (
@@ -495,9 +503,9 @@ export default function OrganizationEngagementContent({
                 const avgEngPerEvent =
                   org.totalEventosRealizados > 0
                     ? Math.round(
-                      org.totalParticipantesEngajados /
-                      org.totalEventosRealizados,
-                    )
+                        org.totalParticipantesEngajados /
+                          org.totalEventosRealizados,
+                      )
                     : 0;
 
                 return (

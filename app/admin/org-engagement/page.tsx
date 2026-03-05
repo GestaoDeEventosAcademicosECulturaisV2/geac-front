@@ -1,5 +1,10 @@
 import { RoleGuard } from "@/components/auth/RoleGuard";
-import { getAllOrganizationEngagement, getOrganizationDashBoard, getTop5Engajament, getTop5MostEvents } from "@/app/actions/organizationEngagementActions";
+import {
+  getAllOrganizationEngagement,
+  getOrganizationDashBoard,
+  getTop5Engajament,
+  getTop5MostEvents,
+} from "@/app/actions/organizationEngagementActions";
 import OrganizationEngagementContent from "./OrganizationEngagementContent";
 
 export const dynamic = "force-dynamic";
@@ -23,13 +28,14 @@ export default async function OrganizationEngagementPage() {
             </p>
           </div>
 
-          <OrganizationEngagementContent stats={
-            {
-              initialData :topOrgs,
-              dashBoard : dashBoard,
+          <OrganizationEngagementContent
+            stats={{
+              initialData: topOrgs,
+              dashBoard: dashBoard,
               moreEngagement: top5byEvents,
-              mostEvents: top5byEngagement
-            }} />
+              mostEvents: top5byEngagement,
+            }}
+          />
         </div>
       </div>
     </RoleGuard>

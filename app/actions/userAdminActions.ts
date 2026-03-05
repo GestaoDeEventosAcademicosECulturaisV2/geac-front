@@ -30,7 +30,10 @@ export async function getUsersAction(): Promise<UserResponseDTO[]> {
   }
 }
 
-export async function updateUserAction(id: string, payload: UserPatchRequestDTO) {
+export async function updateUserAction(
+  id: string,
+  payload: UserPatchRequestDTO,
+) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -48,7 +51,9 @@ export async function updateUserAction(id: string, payload: UserPatchRequestDTO)
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+      return {
+        error: errorData?.message || `Erro no servidor: ${response.status}`,
+      };
     }
 
     revalidatePath("/admin/users");
@@ -75,7 +80,9 @@ export async function deleteUserAction(id: string) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+      return {
+        error: errorData?.message || `Erro no servidor: ${response.status}`,
+      };
     }
 
     revalidatePath("/admin/users");

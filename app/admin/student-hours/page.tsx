@@ -1,19 +1,23 @@
 import { RoleGuard } from "@/components/auth/RoleGuard";
-import { getAllStudentHours, getDashBoardStatistics } from "@/app/actions/studentHoursActions";
+import {
+  getAllStudentHours,
+  getDashBoardStatistics,
+} from "@/app/actions/studentHoursActions";
 import StudentHoursContent from "./StudentHoursContent";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentHoursPage() {
   const studentHours = await getAllStudentHours();
-  const dashBoard = await getDashBoardStatistics() ?? {
+  const dashBoard = (await getDashBoardStatistics()) ?? {
     totalAlunos: 0,
     totalCertificados: 0,
     horasTotais: 0,
     studentAverage: 0,
   };
-  
-  return (<RoleGuard allowedRoles={["ADMIN"]}>
+
+  return (
+    <RoleGuard allowedRoles={["ADMIN"]}>
       <div className="min-h-screen bg-zinc-50 dark:bg-black py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
@@ -26,11 +30,11 @@ export default async function StudentHoursPage() {
             </p>
           </div>
 
-          <StudentHoursContent 
-            stats={{ 
-              initialData: studentHours, 
-              dashBoard: dashBoard 
-            }} 
+          <StudentHoursContent
+            stats={{
+              initialData: studentHours,
+              dashBoard: dashBoard,
+            }}
           />
         </div>
       </div>
