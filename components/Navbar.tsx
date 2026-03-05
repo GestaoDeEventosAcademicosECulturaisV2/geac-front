@@ -37,7 +37,7 @@ const NAV_CONFIG: NavConfigType = {
       roles: ["STUDENT", "PROFESSOR", "ORGANIZER"],
     },
     {
-      href: "/meus-eventos",
+      href: "events/my-events",
       label: "Meus Eventos",
       icon: "⭐",
       roles: ["STUDENT", "PROFESSOR", "ORGANIZER"],
@@ -187,7 +187,10 @@ export function Navbar() {
                     isActiveLink(sub.href),
                   );
                   return (
-                    <div key={index} className="relative group flex items-center">
+                    <div
+                      key={index}
+                      className="relative group flex items-center"
+                    >
                       <button
                         className={`
                           px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
