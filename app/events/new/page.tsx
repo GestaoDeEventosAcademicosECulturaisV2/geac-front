@@ -28,7 +28,6 @@ export default async function NewEventPage() {
   } else {
     organizers = await getUserOrganizers();
   }
-  const daysBeforeNotify = "";
 
   return (
     <RoleGuard allowedRoles={["ORGANIZER", "ADMIN"]}>
@@ -81,7 +80,6 @@ export default async function NewEventPage() {
               tags={tags}
               speakers={speakers}
               organizers={organizers}
-              daysBeforeNotify={daysBeforeNotify}
             />
           )}
         </div>

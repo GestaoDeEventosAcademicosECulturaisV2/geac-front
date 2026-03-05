@@ -43,7 +43,6 @@ interface CreateEventFormProps {
   tags: { id: number; name: string }[];
   speakers: { id: number; name: string }[];
   organizers: Array<OrganizerResponseDTO>;
-  daysBeforeNotify: string;
 }
 
 export default function CreateEventForm({
