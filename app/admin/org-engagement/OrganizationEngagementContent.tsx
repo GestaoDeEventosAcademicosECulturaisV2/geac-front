@@ -266,7 +266,7 @@ export default function OrganizationEngagementContent({
           ) : (
             <div className="space-y-3">
               {topByEvents.map((org, idx) => {
-                const max = topByEvents[0]?.value || 1;
+                // const max = topByEvents[0]?.value || 1;
                 const barWidth = Math.max(
                   (org.value / mostEvents[0].value) * 100,
                   4,

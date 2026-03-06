@@ -55,7 +55,7 @@ export default function EditEventModal({
   tags,
   speakers,
   organizers,
-  daysBeforeNotify,
+  // daysBeforeNotify,
   onClose,
   onSuccess,
 }: Readonly<EditEventModalProps>) {
@@ -326,10 +326,10 @@ export default function EditEventModal({
         requirementIds: formData.requirementIds.map(Number),
         workloadHours: Number(formData.workloadHours) || undefined,
         maxCapacity: Number(formData.maxCapacity) || undefined,
-        onlineLink: formData.isOnline ? formData.onlineLink : undefined,
+        onlineLink: formData.isOnline ? formData.onlineLink : null,
         locationId: formData.isOnline
-          ? undefined
-          : Number(formData.locationId) || undefined,
+          ? null
+          : Number(formData.locationId) || null,
         tags: formData.tags.map(Number),
         speakers: formData.speakers.map(Number),
         orgId: formData.organizerId || undefined,

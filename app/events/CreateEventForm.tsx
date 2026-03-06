@@ -242,7 +242,7 @@ export default function CreateEventForm({
         maxCapacity: maxCap,
         onlineLink: formData.isOnline ? formData.onlineLink : undefined,
         locationId: Number.isNaN(Number(formData.locationId))
-          ? 1
+          ? null
           : Number(formData.locationId),
         tags: formData.tags.map(Number),
         speakers: formData.speakers.map(Number),

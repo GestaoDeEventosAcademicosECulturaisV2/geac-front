@@ -74,7 +74,7 @@ export default function EventStatisticsContent({
     const totalInscritos = dashBoard.totalInscritos;
     const totalPresentes = dashBoard.totalPresentes;
     const taxaPresenca = dashBoard.taxaPresenca;
-    const eventsWithRating = initialData.filter((e) => e.mediaAvaliacao > 0);
+    // const eventsWithRating = initialData.filter((e) => e.mediaAvaliacao > 0);
     const avgRating = dashBoard.avgRating;
 
     return {
@@ -88,7 +88,18 @@ export default function EventStatisticsContent({
       taxaPresenca,
       avgRating,
     };
-  }, [initialData]);
+  }, [
+    // initialData,
+    dashBoard.activeEvents,
+    dashBoard.avgRating,
+    dashBoard.cancelledEvents,
+    dashBoard.completedEvents,
+    dashBoard.taxaPresenca,
+    dashBoard.totalEvents,
+    dashBoard.totalInscritos,
+    dashBoard.totalPresentes,
+    dashBoard.upcomingEvents,
+  ]);
 
   // ── Top 5 eventos por inscritos ──
   const topEvents = useMemo(() => {

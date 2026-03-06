@@ -241,7 +241,9 @@ export default function OrganizerManagementClient({
             </span>
             <select
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as any)}
+              onChange={(e) =>
+                setSortOrder(e.target.value as "default" | "asc" | "desc")
+              }
               className="text-sm border-zinc-300 dark:border-zinc-600 rounded-md py-1.5 pl-3 pr-8 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer"
             >
               <option value="default">Data de Criação</option>

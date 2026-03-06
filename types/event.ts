@@ -50,7 +50,7 @@ export interface EventRequestDTO {
   endTime: string;
   categoryId: number;
   requirementIds: number[];
-  locationId?: number;
+  locationId?: number | null;
   workloadHours: number;
   maxCapacity: number;
   onlineLink?: string;
@@ -116,7 +116,7 @@ export interface RegistrationResponseDTO {
 export interface EventPatchRequestDTO {
   title?: string;
   description?: string;
-  onlineLink?: string;
+  onlineLink?: string | null;
   startTime?: string;
   endTime?: string;
   workloadHours?: number;
@@ -124,7 +124,7 @@ export interface EventPatchRequestDTO {
   categoryId?: number;
   requirementIds?: number[];
   tags?: number[];
-  locationId?: number;
+  locationId?: number | null;
   speakers?: number[];
   orgId?: string;
 }
